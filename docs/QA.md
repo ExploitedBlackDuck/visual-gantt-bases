@@ -58,3 +58,7 @@ Cross-note checks reduce stale writes but aren't an atomic transaction across al
 ## Publication
 
 The live macOS regression pass is complete. Public source repository: https://github.com/ExploitedBlackDuck/visual-gantt-bases. The first beta is being published through the authenticated browser. Official directory submission and independent human review have not been completed.
+
+## 0.7.1 review fixes
+
+Removed CSS importance overrides after the Obsidian preview scan flagged them. Task-button styles now use chart-scoped selectors. Reduced-motion scrolling targets the timeline scroll region. The v0.7.0 macOS evidence above covers the unchanged runtime logic. The 0.7.1 CSS was copied into the demo vault and its light-mode chart was inspected in Obsidian 1.15.1. Task labels, row alignment, bars, milestones, and arrows remained readable.

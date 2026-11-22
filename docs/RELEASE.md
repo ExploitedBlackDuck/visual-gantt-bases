@@ -1,7 +1,7 @@
 # Release preparation
 by LanternSquid
 
-## Release 0.7.0
+## Release 0.7.1
 
 This is a beta for community testing. The code and demo have completed local automated checks and the final macOS application pass. Public source repository: https://github.com/ExploitedBlackDuck/visual-gantt-bases. The first beta is being published through the authenticated browser. Use the steps below when preparing subsequent releases.
 
@@ -11,7 +11,7 @@ Before publishing:
 
 1. Run `npm test` and inspect `docs/QA.md` for the actual test evidence and remaining platform coverage.
 2. Create an owned public GitHub repository, such as `visual-gantt-bases`. Push this repository's files without local exports or unrelated vault contents.
-3. Create and push a Git tag named exactly `0.7.0`. It must match the manifest version.
+3. Create and push a Git tag named exactly `0.7.1`. It must match the manifest version.
 4. Create a GitHub release with that tag. Attach `main.js`, `manifest.json`, and `styles.css` individually. The ZIP is an optional convenience download and doesn't replace those assets.
 5. Use the prepared text in `docs/COMMUNITY_REVIEW.md` to request beta testing. Replace any local installation references with the actual repository URL.
 6. After beta feedback, sign in at https://community.obsidian.md, connect the owning GitHub account, and submit the repository. Resolve the automated review findings before announcing general availability.
@@ -23,4 +23,6 @@ Requirements: https://docs.obsidian.md/community-directory/submission-requiremen
 
 ## Rollback
 
-Disable the plugin, replace the three runtime files with the saved v0.6.0 release, then reload Obsidian. Settings introduced in 0.7.0 can remain in a Base and will be ignored by 0.6.0. Undo history is in memory and doesn't survive reloads. Export files remain ordinary vault files.
+Disable the plugin, replace the three runtime files with the saved v0.6.0 release, then reload Obsidian. Settings introduced in 0.7.1 can remain in a Base and will be ignored by 0.6.0. Undo history is in memory and doesn't survive reloads. Export files remain ordinary vault files.
+
+Publish directory releases as regular GitHub releases, not prereleases. Keep beta coverage limitations in the release notes.
