@@ -21,9 +21,9 @@
 .vg-row{display:grid;grid-template-columns:var(--vg-label-width) minmax(0,1fr);height:var(--vg-row-height);border-bottom:1px solid var(--background-modifier-border);align-items:center}
 .vg-row:last-child{border-bottom:0}
 .vg-label{position:sticky;left:0;z-index:5;display:flex;align-items:center;height:100%;padding:8px 14px;background:var(--background-primary);border-right:1px solid var(--background-modifier-border);overflow:hidden;line-height:18px}
-.vg-root .vg-task-link{display:block!important;justify-content:flex-start!important;align-content:center;text-align:left!important;width:100%;height:100%!important;min-height:0;border:0!important;border-right:1px solid var(--background-modifier-border)!important;border-radius:0!important;background:var(--background-primary)!important;box-shadow:none!important;cursor:pointer;color:var(--text-normal)!important;font:inherit!important;line-height:18px!important;padding:7px 14px!important;white-space:normal!important;overflow:hidden;word-break:normal;overflow-wrap:anywhere}
-.vg-root .vg-task-link:hover{background:var(--background-secondary)!important;color:var(--text-accent)!important;text-decoration:underline}
-.vg-root .vg-task-link:focus-visible{outline:2px solid var(--interactive-accent);outline-offset:-3px}
+.vg-root .vg-chart button.vg-label.vg-task-link{display:block;justify-content:flex-start;align-content:center;text-align:left;width:100%;height:100%;min-height:0;border:0;border-right:1px solid var(--background-modifier-border);border-radius:0;background:var(--background-primary);box-shadow:none;cursor:pointer;color:var(--text-normal);font:inherit;line-height:18px;padding:7px 14px;white-space:normal;overflow:hidden;word-break:normal;overflow-wrap:anywhere}
+.vg-root .vg-chart button.vg-label.vg-task-link:hover{background:var(--background-secondary);color:var(--text-accent);text-decoration:underline}
+.vg-root .vg-chart button.vg-label.vg-task-link:focus-visible{outline:2px solid var(--interactive-accent);outline-offset:-3px}
 .vg-track{height:100%;position:relative;background-image:linear-gradient(to right,var(--background-modifier-border) 1px,transparent 1px);background-size:var(--vg-day-width) 100%}
 .vg-weekend{position:absolute;top:0;bottom:0;width:var(--vg-day-width);background:var(--background-modifier-hover);opacity:.5;pointer-events:none;z-index:0}
 .vg-axis{height:var(--vg-axis-height);font-weight:600;position:sticky;top:0;z-index:6;background:var(--background-secondary)}
@@ -68,7 +68,7 @@
 .vg-swatch.vg-legend-today{width:2px;height:12px;background:#d32f2f;border-radius:0;margin:0 4px}
 .vg-large .vg-track{background-image:linear-gradient(to right,color-mix(in srgb,var(--background-modifier-border) 45%,transparent) 1px,transparent 1px),repeating-linear-gradient(to right,transparent 0,transparent calc(5 * var(--vg-day-width)),var(--background-modifier-hover) calc(5 * var(--vg-day-width)),var(--background-modifier-hover) calc(7 * var(--vg-day-width)));background-size:var(--vg-grid-size) 100%,calc(7 * var(--vg-day-width)) 100%;background-position:0 0,var(--vg-week-offset) 0}
 @media(max-width:700px){.vg-root{padding:10px}.vg-toolbar{gap:8px}.vg-width-control{flex-wrap:wrap}.vg-width-control input[type=range]{width:70px}.vg-export-controls{margin-left:0}.vg-legend{gap:8px 12px}.vg-count{font-size:11px}.vg-footer{font-size:11px}}
-@media(prefers-reduced-motion:reduce){.vg-root *{scroll-behavior:auto!important}}
+@media(prefers-reduced-motion:reduce){.vg-root .vg-scroll{scroll-behavior:auto}}
 /* Compact zoom keeps short bars and milestone diamonds within their dates. */
 .vg-bar{padding:0;min-width:2px;line-height:26px}
 .vg-bar>span{display:block;padding:0 7px;line-height:26px;white-space:nowrap}
