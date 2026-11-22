@@ -1,0 +1,24 @@
+name: Bug report
+description: Report a problem with Visual Gantt by LanternSquid
+title: "[Bug] "
+body:
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Obsidian version, plugin version, operating system, and theme.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include zoom, column width, and whether date editing was enabled. Use fictional task notes for examples.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Expected and actual result
+    validations:
+      required: true
