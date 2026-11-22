@@ -1,0 +1,12 @@
+filters:
+  and:
+    - file.inFolder("Invalid Tasks")
+views:
+  - type: visual-gantt
+    name: Validation Errors
+    startProperty: start
+    endProperty: end
+    labelProperty: title
+    statusProperty: status
+    dependsProperty: depends_on
+    milestoneProperty: milestone

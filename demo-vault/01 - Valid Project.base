@@ -1,0 +1,13 @@
+filters:
+  and:
+    - file.inFolder("Valid Tasks")
+views:
+  - type: visual-gantt
+    name: Valid Project
+    startProperty: start
+    endProperty: end
+    labelProperty: title
+    statusProperty: status
+    dependsProperty: depends_on
+    milestoneProperty: milestone
+    enableEditing: false
