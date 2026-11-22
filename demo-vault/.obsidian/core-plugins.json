@@ -1,0 +1,8 @@
+{
+  "file-explorer": true,
+  "switcher": true,
+  "command-palette": true,
+  "properties": true,
+  "file-recovery": true,
+  "bases": true
+}
