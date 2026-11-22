@@ -1,7 +1,7 @@
 # Visual Gantt for Bases
 by LanternSquid
 
-A project timeline view for Obsidian Bases. Version **0.7.0** is a desktop beta for community testing.
+A project timeline view for Obsidian Bases. Version **0.7.1** is a desktop beta for community testing.
 
 ## Features
 

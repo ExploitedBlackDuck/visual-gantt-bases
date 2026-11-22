@@ -1,12 +1,14 @@
 {
   "name": "visual-gantt-bases",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "private": true,
   "description": "Visual Gantt for Bases by LanternSquid",
   "author": "LanternSquid",
   "license": "MIT",
   "main": "main.js",
-  "engines": {"node": ">=22"},
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "test": "node scripts/test.js",
     "check": "node scripts/check-release.js"

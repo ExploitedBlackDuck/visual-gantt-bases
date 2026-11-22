@@ -1,6 +1,12 @@
 # Changelog
 by LanternSquid
 
+## 0.7.1
+
+- Replace CSS importance overrides with selectors scoped to the chart task buttons.
+- Target reduced-motion scrolling directly on the timeline scroll region.
+- Address the Obsidian preview CSS lint warning.
+
 ## 0.7.0
 
 Added persistent Day, Week, and Month zoom; adjustable task-column width; a local-date Today marker and jump control; Project range reset; full PNG exports; and paginated landscape PDF exports with repeated headings and labels. Export status survives Base refreshes, and PDF pagination avoids almost-empty padding pages.

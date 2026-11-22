@@ -1,7 +1,7 @@
 {
   "id": "visual-gantt-bases",
   "name": "Visual Gantt for Bases",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "minAppVersion": "1.15.1",
   "description": "Visualize project timelines in Bases with zoom, dependencies, milestones, a today marker, PNG and PDF export, and optional date editing with undo. By LanternSquid.",
   "author": "LanternSquid",
