@@ -1,0 +1,75 @@
+/* Visual Gantt for Bases by LanternSquid */
+.vg-root{--vg-planned:#64748b;--vg-progress:#2563eb;--vg-done:#15803d;--vg-blocked:#a34b08;--vg-milestone:#7c3aed;box-sizing:border-box;padding:16px;color:var(--text-normal);height:100%;overflow:auto;font-size:13px}
+.vg-root *{box-sizing:border-box}
+.vg-header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.vg-identity{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.vg-header h3{margin:0;font-size:20px;letter-spacing:-.3px}
+.vg-brand,.vg-count,.vg-footer{font-size:12px;color:var(--text-muted)}
+.vg-brand{white-space:nowrap}
+.vg-count{font-variant-numeric:tabular-nums}
+.vg-legend{display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap;margin-bottom:14px;font-size:11px;color:var(--text-muted)}
+.vg-legend-item{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.vg-swatch{display:inline-block;width:10px;height:10px;border-radius:3px;flex:none}
+.vg-legend-milestone{background:var(--vg-milestone);transform:rotate(45deg);border-radius:1px;width:8px;height:8px;margin:0 1px}
+.vg-edit-state{margin-left:auto;padding:3px 8px;border:1px solid var(--background-modifier-border);border-radius:12px;color:var(--text-muted)}
+.vg-warnings{margin:0 0 14px;padding:10px 12px;background:var(--background-secondary);border-radius:6px;color:var(--text-warning)}
+.vg-warnings summary{cursor:pointer;font-weight:600}.vg-warnings ul{margin:8px 0 0;padding-left:20px;font-size:12px;line-height:1.7}
+.vg-empty{padding:24px;background:var(--background-secondary);border-radius:8px}
+.vg-scroll{overflow:auto;max-height:72vh;border:1px solid var(--background-modifier-border);border-radius:8px;isolation:isolate;scrollbar-gutter:stable}
+.vg-scroll:focus-visible{outline:2px solid var(--interactive-accent);outline-offset:3px}
+.vg-chart{position:relative;width:calc(var(--vg-label-width) + var(--vg-days) * var(--vg-day-width));min-width:0;background:var(--background-primary)}
+.vg-row{display:grid;grid-template-columns:var(--vg-label-width) minmax(0,1fr);height:var(--vg-row-height);border-bottom:1px solid var(--background-modifier-border);align-items:center}
+.vg-row:last-child{border-bottom:0}
+.vg-label{position:sticky;left:0;z-index:5;display:flex;align-items:center;height:100%;padding:8px 14px;background:var(--background-primary);border-right:1px solid var(--background-modifier-border);overflow:hidden;line-height:18px}
+.vg-root .vg-task-link{display:block!important;justify-content:flex-start!important;align-content:center;text-align:left!important;width:100%;height:100%!important;min-height:0;border:0!important;border-right:1px solid var(--background-modifier-border)!important;border-radius:0!important;background:var(--background-primary)!important;box-shadow:none!important;cursor:pointer;color:var(--text-normal)!important;font:inherit!important;line-height:18px!important;padding:7px 14px!important;white-space:normal!important;overflow:hidden;word-break:normal;overflow-wrap:anywhere}
+.vg-root .vg-task-link:hover{background:var(--background-secondary)!important;color:var(--text-accent)!important;text-decoration:underline}
+.vg-root .vg-task-link:focus-visible{outline:2px solid var(--interactive-accent);outline-offset:-3px}
+.vg-track{height:100%;position:relative;background-image:linear-gradient(to right,var(--background-modifier-border) 1px,transparent 1px);background-size:var(--vg-day-width) 100%}
+.vg-weekend{position:absolute;top:0;bottom:0;width:var(--vg-day-width);background:var(--background-modifier-hover);opacity:.5;pointer-events:none;z-index:0}
+.vg-axis{height:var(--vg-axis-height);font-weight:600;position:sticky;top:0;z-index:6;background:var(--background-secondary)}
+.vg-axis>.vg-label{background:var(--background-secondary);z-index:7}
+.vg-axis-dates{font-size:11px;background-color:var(--background-secondary)}
+.vg-month{position:absolute;top:0;height:36px;padding:9px 8px;border-bottom:1px solid var(--background-modifier-border);border-left:1px solid var(--background-modifier-border);overflow:hidden;white-space:nowrap;z-index:1;color:var(--text-normal)}
+.vg-tick{position:absolute;top:48px;padding-left:6px;color:var(--text-muted);white-space:nowrap;z-index:1;font-weight:500}
+.vg-bar{position:absolute;top:13px;height:26px;min-width:3px;border-radius:5px;padding:5px 7px;color:#fff;font-size:11px;line-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2;box-shadow:0 1px 2px #00000012}
+.vg-planned{background:var(--vg-planned)}.vg-progress{background:var(--vg-progress)}.vg-done{background:var(--vg-done)}.vg-blocked{background:var(--vg-blocked)}
+.vg-milestone{position:absolute;top:19px;width:14px;height:14px;margin-left:-7px;transform:rotate(45deg);background:var(--vg-milestone);border:2px solid var(--background-primary);border-radius:2px;z-index:2}
+.vg-milestone.vg-done{background:var(--vg-done)}.vg-milestone.vg-blocked{background:var(--vg-blocked)}
+.vg-dependencies{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:visible;color:var(--text-muted)}
+.vg-dependency-path{fill:none;stroke:currentColor;stroke-width:1.25;opacity:.75;stroke-linejoin:round}
+.vg-footer{padding:12px 1px 0;line-height:1.6}
+.vg-editable{cursor:grab;touch-action:pan-y;outline-offset:3px}.vg-editable:active{cursor:grabbing}.vg-editable:focus-visible{outline:2px solid var(--interactive-accent)}
+.vg-edit-form{display:flex;flex-direction:column;gap:12px}.vg-edit-form label{display:flex;flex-direction:column;gap:4px}.vg-edit-form input{width:100%}.vg-edit-actions{display:flex;justify-content:flex-end;gap:8px}.vg-edit-error{color:var(--text-error);font-size:13px;min-height:1em}
+.theme-dark .vg-root{--vg-planned:#53657c;--vg-progress:#2563eb;--vg-done:#15803d;--vg-blocked:#a34b08;--vg-milestone:#a78bfa}
+
+/* Keep the timeline in one scroll region with its dates and task names pinned. */
+.vg-root{display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.vg-header,.vg-legend,.vg-warnings,.vg-footer,.vg-empty{flex-shrink:0}
+.vg-scroll{flex:1;min-height:140px;max-height:none}
+.vg-track{background-image:linear-gradient(to right,color-mix(in srgb,var(--background-modifier-border) 45%,transparent) 1px,transparent 1px)}
+
+.vg-month{display:flex;align-items:center;padding:0}
+.vg-month-label{position:relative;display:block;padding:0 8px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* Timeline controls by LanternSquid */
+.vg-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;margin:0 0 12px;flex-shrink:0}
+.vg-control{display:inline-flex;align-items:center;gap:8px;color:var(--text-muted);font-size:12px;white-space:nowrap}
+.vg-control select{min-width:86px}
+.vg-width-control input[type=range]{width:100px;margin:0}
+.vg-width-control output{width:40px;font-variant-numeric:tabular-nums;font-size:11px}
+.vg-export-controls{display:flex;gap:6px;margin-left:auto}
+.vg-toolbar button,.vg-open-export{font-size:12px}
+.vg-export-status{flex-shrink:0;font-size:12px;line-height:1.6;color:var(--text-muted);overflow-wrap:anywhere;max-height:70px;overflow:auto}
+.vg-export-status:empty{display:none}.vg-export-status:not(:empty){margin-bottom:10px}
+.vg-open-export{margin-left:8px}
+.vg-warnings{max-height:180px;overflow:auto}
+.vg-track{background-size:var(--vg-grid-size,var(--vg-day-width)) 100%}
+.vg-today-line{position:absolute;bottom:0;width:2px;background:#d32f2f;z-index:3;pointer-events:none}
+.vg-today-label{position:absolute;bottom:1px;transform:translateX(-50%);padding:0 4px;border-radius:3px;background:#d32f2f;color:#fff;font-size:10px;line-height:15px;z-index:3;white-space:nowrap}
+.vg-swatch.vg-legend-today{width:2px;height:12px;background:#d32f2f;border-radius:0;margin:0 4px}
+.vg-large .vg-track{background-image:linear-gradient(to right,color-mix(in srgb,var(--background-modifier-border) 45%,transparent) 1px,transparent 1px),repeating-linear-gradient(to right,transparent 0,transparent calc(5 * var(--vg-day-width)),var(--background-modifier-hover) calc(5 * var(--vg-day-width)),var(--background-modifier-hover) calc(7 * var(--vg-day-width)));background-size:var(--vg-grid-size) 100%,calc(7 * var(--vg-day-width)) 100%;background-position:0 0,var(--vg-week-offset) 0}
+@media(max-width:700px){.vg-root{padding:10px}.vg-toolbar{gap:8px}.vg-width-control{flex-wrap:wrap}.vg-width-control input[type=range]{width:70px}.vg-export-controls{margin-left:0}.vg-legend{gap:8px 12px}.vg-count{font-size:11px}.vg-footer{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.vg-root *{scroll-behavior:auto!important}}
+/* Compact zoom keeps short bars and milestone diamonds within their dates. */
+.vg-bar{padding:0;min-width:2px;line-height:26px}
+.vg-bar>span{display:block;padding:0 7px;line-height:26px;white-space:nowrap}
+.vg-milestone{width:var(--vg-milestone-size,14px);height:var(--vg-milestone-size,14px);top:calc((var(--vg-row-height) - var(--vg-milestone-size,14px)) / 2);margin-left:calc(var(--vg-milestone-size,14px) / -2);border-width:1px}
