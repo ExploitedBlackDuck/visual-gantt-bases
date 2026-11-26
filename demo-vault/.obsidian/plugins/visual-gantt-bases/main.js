@@ -628,7 +628,7 @@ class GanttView extends BasesView {
       event.preventDefault(); event.stopPropagation();
       const startX = event.clientX; let width = labelWidth;
       resizer.setPointerCapture(event.pointerId); chart.addClass('vg-resizing');
-      const move = e => { width = Math.min(520, Math.max(180, labelWidth + e.clientX - startX)); chart.style.setProperty('--vg-label-width', width + 'px'); };
+      const move = e => { width = Math.min(520, Math.max(180, labelWidth + e.clientX - startX)); chart.style.setProperty('--vg-label-width', width + 'px'); resizer.setAttribute('aria-valuenow', String(Math.round(width))); resizer.setAttribute('aria-valuetext', Math.round(width) + ' pixels'); };
       const cleanup = () => { resizer.removeEventListener('pointermove', move); resizer.removeEventListener('pointerup', finish); resizer.removeEventListener('pointercancel', cancel); chart.removeClass('vg-resizing'); };
       const finish = e => { move(e); cleanup(); if (clampWidth(width) === labelWidth) chart.style.setProperty('--vg-label-width', labelWidth + 'px'); else saveWidth(width); };
       const cancel = () => { cleanup(); chart.style.setProperty('--vg-label-width', labelWidth + 'px'); };

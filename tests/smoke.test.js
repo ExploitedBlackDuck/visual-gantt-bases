@@ -127,6 +127,7 @@ try {
   resizer.events.pointerdown({ button: 0, isPrimary: true, clientX: 500, pointerId: 1, preventDefault() {}, stopPropagation() {} });
   resizer.events.pointermove({ clientX: 583 });
   assert.equal(chartNode.style['--vg-label-width'], '383px', 'the column follows the pointer while dragging');
+  assert.equal(resizer.attributes['aria-valuenow'], '383', 'the separator value follows the drag');
   resizer.events.pointerup({ clientX: 583 });
   assert.equal(settings.labelWidth, 380, 'a drag saves the width snapped to 20 pixels');
   assert.equal(view.model.labelWidth, 380);
