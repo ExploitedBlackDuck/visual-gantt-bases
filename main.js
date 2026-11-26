@@ -5,7 +5,8 @@ const VIEW_TYPE = 'visual-gantt';
 const DAY_MS = 86400000;
 const LABEL_WIDTH = 300, DAY_WIDTH = 26, ROW_HEIGHT = 52, AXIS_HEIGHT = 76;
 const ZOOM_WIDTHS = { day: 26, week: 9, month: 3.5 };
-const ZOOM_ORDER = ['month', 'week', 'day'];
+// Zoom levels from the widest view (Month) to the closest (Day).
+const ZOOM_ORDER = Object.keys(ZOOM_WIDTHS).sort((a, b) => ZOOM_WIDTHS[a] - ZOOM_WIDTHS[b]);
 const MAX_TASKS = 500;
 const activeWrites = new WeakSet();
 function localToday(now = new Date()) {
@@ -749,4 +750,4 @@ class VisualGanttPlugin extends Plugin {
   onunload() { this.lastChange = null; for (const view of this.views) view.root.empty(); this.views.clear(); }
 }
 module.exports = VisualGanttPlugin;
-module.exports._test = { isoDate, parseDependencies, resolveGraph, makeTasks, strictDate, shiftRange, validateChange, unchangedDates, saveTaskDates, undoDateChange, sameDependencies, statusClass, localToday, clampWidth, wheelZoom, fieldIssue, verifyRelatedTasks, dependencyGeometry, planPdfPages, makeRasterPdf, drawExportCanvas, saveExport };
+module.exports._test = { isoDate, parseDependencies, resolveGraph, makeTasks, strictDate, shiftRange, validateChange, unchangedDates, saveTaskDates, undoDateChange, sameDependencies, statusClass, localToday, clampWidth, wheelZoom, ZOOM_ORDER, fieldIssue, verifyRelatedTasks, dependencyGeometry, planPdfPages, makeRasterPdf, drawExportCanvas, saveExport };
