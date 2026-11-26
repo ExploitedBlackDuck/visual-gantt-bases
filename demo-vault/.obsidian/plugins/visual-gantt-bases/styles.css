@@ -54,8 +54,12 @@
 .vg-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;margin:0 0 12px;flex-shrink:0}
 .vg-control{display:inline-flex;align-items:center;gap:8px;color:var(--text-muted);font-size:12px;white-space:nowrap}
 .vg-control select{min-width:86px}
-.vg-width-control input[type=range]{width:100px;margin:0}
-.vg-width-control output{width:40px;font-variant-numeric:tabular-nums;font-size:11px}
+.vg-resizer{position:absolute;top:0;right:0;width:7px;height:100%;cursor:col-resize;touch-action:none;z-index:8}
+.vg-resizer::after{content:'';position:absolute;top:0;right:0;width:2px;height:100%;background:transparent;transition:background-color .12s}
+.vg-resizer:hover::after,.vg-resizer:focus-visible::after,.vg-resizing .vg-resizer::after{background:var(--interactive-accent)}
+.vg-resizer:focus-visible{outline:none}
+.vg-resizing{cursor:col-resize;user-select:none}
+.vg-resizing .vg-dependencies{visibility:hidden}
 .vg-export-controls{display:flex;gap:6px;margin-left:auto}
 .vg-toolbar button,.vg-open-export{font-size:12px}
 .vg-export-status{flex-shrink:0;font-size:12px;line-height:1.6;color:var(--text-muted);overflow-wrap:anywhere;max-height:70px;overflow:auto}
@@ -67,7 +71,7 @@
 .vg-today-label{position:absolute;bottom:1px;transform:translateX(-50%);padding:0 4px;border-radius:3px;background:#d32f2f;color:#fff;font-size:10px;line-height:15px;z-index:3;white-space:nowrap}
 .vg-swatch.vg-legend-today{width:2px;height:12px;background:#d32f2f;border-radius:0;margin:0 4px}
 .vg-large .vg-track{background-image:linear-gradient(to right,color-mix(in srgb,var(--background-modifier-border) 45%,transparent) 1px,transparent 1px),repeating-linear-gradient(to right,transparent 0,transparent calc(5 * var(--vg-day-width)),var(--background-modifier-hover) calc(5 * var(--vg-day-width)),var(--background-modifier-hover) calc(7 * var(--vg-day-width)));background-size:var(--vg-grid-size) 100%,calc(7 * var(--vg-day-width)) 100%;background-position:0 0,var(--vg-week-offset) 0}
-@media(max-width:700px){.vg-root{padding:10px}.vg-toolbar{gap:8px}.vg-width-control{flex-wrap:wrap}.vg-width-control input[type=range]{width:70px}.vg-export-controls{margin-left:0}.vg-legend{gap:8px 12px}.vg-count{font-size:11px}.vg-footer{font-size:11px}}
+@media(max-width:700px){.vg-root{padding:10px}.vg-toolbar{gap:8px}.vg-export-controls{margin-left:0}.vg-legend{gap:8px 12px}.vg-count{font-size:11px}.vg-footer{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.vg-root .vg-scroll{scroll-behavior:auto}}
 /* Compact zoom keeps short bars and milestone diamonds within their dates. */
 .vg-bar{padding:0;min-width:2px;line-height:26px}

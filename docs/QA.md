@@ -42,7 +42,7 @@ Test environment: macOS, Obsidian 1.15.1. Tests were performed on November 22, 2
 ## Reproduction steps for reviewers
 
 1. Open the included demo and enable the plugin. Check the 12 tasks and four milestones in the valid project. Check the seven expected warnings and six drawn tasks in the validation sample.
-2. Try all three zoom levels. Change task width. Reload Obsidian and confirm the settings remain. Scroll both directions and check pinned labels and dates.
+2. Try all three zoom levels. Drag the Task column edge, then use the arrow keys on it. Reload Obsidian and confirm the settings remain. Scroll both directions and check pinned labels and dates.
 3. Click Today and Project. Test a project that spans today and one that doesn't. Verify the marker uses the machine's local calendar date.
 4. Export PNG and PDF. Check every task label and milestone, the legend, page dates, and final page. Test a project that barely exceeds a page width to catch empty padding pages.
 5. Enable editing in the disposable demo. Move Firewall policy audit from December 8–11 to December 9–12. Save, inspect its properties, and Undo. Confirm December 8–11 returns.

@@ -53,7 +53,7 @@ A milestone has matching start and end dates. You can also set `milestone: true`
 
 **Shift + scroll to zoom** is an optional view setting, off by default. When it is on, holding Shift while scrolling over the timeline steps between Day, Week, and Month zoom. Scrolling up zooms in and scrolling down zooms out. The date under the pointer stays in place. Without Shift, scrolling works as usual.
 
-**Task width** changes the pinned label column. The same setting is available in the Base view options.
+**Task width**: drag the right edge of the Task heading to resize the pinned label column, from 180 to 520 pixels. Double-click the edge to reset it. A focused edge also responds to the Left and Right arrow keys, Home, and End. The same setting is available in the Base view options.
 
 **Today** includes today when it falls outside the scheduled range and centers it when possible. **Project** returns to the project's dates. A two-year range limit prevents an extremely distant Today jump.
 

@@ -25,9 +25,11 @@ class Element {
   empty() { this.children = []; }
   appendChild(child) { this.children.push(child); }
   addClass(name) { this.classes.push(name); }
+  removeClass(name) { this.classes = this.classes.filter(item => item !== name); }
   setAttribute(name, value) { this.attributes[name] = value; if (name === "class") this.classes = String(value).split(/\s+/); }
   getAttribute(name) { return this.attributes[name]; }
   addEventListener(name, cb) { this.events[name] = cb; }
+  removeEventListener(name, cb) { if (this.events[name] === cb) delete this.events[name]; }
   setPointerCapture() {}
   get ownerDocument() { return global.document; }
   querySelectorAll() { return []; }
@@ -118,9 +120,26 @@ try {
   assert.equal(settings.zoom, 'week');
   assert.equal(view.model.dayWidth, 9);
   let controls = all(root);
-  const width = controls.find(node => node.tag === 'input' && node.attributes['aria-label'] === 'Task column width');
-  width.value = '380'; width.events.change();
+  assert.ok(!controls.some(node => node.tag === 'input' && node.attributes.type === 'range'), 'the toolbar has no width slider');
+  let resizer = controls.find(node => node.attributes.role === 'separator');
+  assert.equal(resizer.attributes['aria-label'], 'Task column width');
+  resizer.setPointerCapture = () => {}; const chartNode = controls.find(node => node.classes.includes('vg-chart'));
+  resizer.events.pointerdown({ button: 0, isPrimary: true, clientX: 500, pointerId: 1, preventDefault() {}, stopPropagation() {} });
+  resizer.events.pointermove({ clientX: 583 });
+  assert.equal(chartNode.style['--vg-label-width'], '383px', 'the column follows the pointer while dragging');
+  resizer.events.pointerup({ clientX: 583 });
+  assert.equal(settings.labelWidth, 380, 'a drag saves the width snapped to 20 pixels');
   assert.equal(view.model.labelWidth, 380);
+  controls = all(root); resizer = controls.find(node => node.attributes.role === 'separator');
+  resizer.events.keydown({ key: 'ArrowRight', preventDefault() {} });
+  assert.equal(view.model.labelWidth, 400, 'arrow keys resize the column');
+  controls = all(root); resizer = controls.find(node => node.attributes.role === 'separator');
+  resizer.events.keydown({ key: 'End', preventDefault() {} });
+  assert.equal(view.model.labelWidth, 520);
+  controls = all(root); resizer = controls.find(node => node.attributes.role === 'separator');
+  resizer.events.dblclick();
+  assert.equal(view.model.labelWidth, 300, 'double-click resets the width');
+  settings.labelWidth = 380; view.onDataUpdated();
   controls = all(root);
   controls.find(node => node.tag === 'button' && node.text === 'Today').events.click();
   assert.ok(view.model.first <= require('../main.js')._test.localToday());

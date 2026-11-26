@@ -559,12 +559,6 @@ class GanttView extends BasesView {
     for (const [value, text] of [['day', 'Day'], ['week', 'Week'], ['month', 'Month']]) zoomSelect.createEl('option', { text, value });
     zoomSelect.value = zoom;
     zoomSelect.addEventListener('change', () => { this.config.set('zoom', zoomSelect.value); this.onDataUpdated(); });
-    const widthLabel = toolbar.createEl('label', { cls: 'vg-control vg-width-control', text: 'Task width' });
-    const widthInput = widthLabel.createEl('input', { type: 'range', attr: { min: '180', max: '520', step: '20', 'aria-label': 'Task column width', 'aria-valuetext': labelWidth + ' pixels' } });
-    widthInput.value = String(labelWidth);
-    const widthValue = widthLabel.createEl('output', { text: labelWidth + ' px' });
-    widthInput.addEventListener('input', () => { widthValue.setText(widthInput.value + ' px'); widthInput.setAttribute('aria-valuetext', widthInput.value + ' pixels'); });
-    widthInput.addEventListener('change', () => { this.config.set('labelWidth', clampWidth(widthInput.value)); this.onDataUpdated(); });
     const todayButton = toolbar.createEl('button', { text: 'Today', attr: { title: 'Show and jump to today' } });
     todayButton.addEventListener('click', () => {
       if (!this.model) return;
@@ -624,7 +618,28 @@ class GanttView extends BasesView {
     for (const [key, value] of Object.entries({ days, 'label-width': labelWidth + 'px', 'day-width': dayWidth + 'px', 'row-height': ROW_HEIGHT + 'px', 'axis-height': AXIS_HEIGHT + 'px' })) chart.style.setProperty('--vg-' + key, String(value));
     chart.style.setProperty('--vg-milestone-size', milestoneSize(dayWidth) + 'px');
     chart.style.setProperty('--vg-grid-size', dayWidth * (zoom === 'month' ? 7 : 1) + 'px');
-    const axis = chart.createDiv({ cls: 'vg-row vg-axis' }); axis.createDiv({ cls: 'vg-label', text: 'Task' });
+    const axis = chart.createDiv({ cls: 'vg-row vg-axis' }); const axisLabel = axis.createDiv({ cls: 'vg-label', text: 'Task' });
+    // Drag the column edge to resize; the width is saved per view when the drag ends.
+    const resizer = axisLabel.createDiv({ cls: 'vg-resizer', attr: { role: 'separator', tabindex: '0', 'aria-orientation': 'vertical', 'aria-label': 'Task column width', 'aria-valuemin': '180', 'aria-valuemax': '520', 'aria-valuenow': String(labelWidth), 'aria-valuetext': labelWidth + ' pixels', title: 'Drag to resize the task column. Double-click to reset.' } });
+    const saveWidth = width => { const next = clampWidth(width); if (next !== labelWidth) { this.config.set('labelWidth', next); this.onDataUpdated(); } };
+    resizer.addEventListener('pointerdown', event => {
+      if (event.button !== 0 || !event.isPrimary) return;
+      event.preventDefault(); event.stopPropagation();
+      const startX = event.clientX; let width = labelWidth;
+      resizer.setPointerCapture(event.pointerId); chart.addClass('vg-resizing');
+      const move = e => { width = Math.min(520, Math.max(180, labelWidth + e.clientX - startX)); chart.style.setProperty('--vg-label-width', width + 'px'); };
+      const cleanup = () => { resizer.removeEventListener('pointermove', move); resizer.removeEventListener('pointerup', finish); resizer.removeEventListener('pointercancel', cancel); chart.removeClass('vg-resizing'); };
+      const finish = e => { move(e); cleanup(); if (clampWidth(width) === labelWidth) chart.style.setProperty('--vg-label-width', labelWidth + 'px'); else saveWidth(width); };
+      const cancel = () => { cleanup(); chart.style.setProperty('--vg-label-width', labelWidth + 'px'); };
+      resizer.addEventListener('pointermove', move); resizer.addEventListener('pointerup', finish); resizer.addEventListener('pointercancel', cancel);
+    });
+    resizer.addEventListener('dblclick', () => saveWidth(LABEL_WIDTH));
+    resizer.addEventListener('keydown', event => {
+      const step = { ArrowLeft: -20, ArrowRight: 20 }[event.key];
+      const target = step ? labelWidth + step : event.key === 'Home' ? 180 : event.key === 'End' ? 520 : null;
+      if (target == null) return;
+      event.preventDefault(); saveWidth(target);
+    });
     const axisDates = axis.createDiv({ cls: 'vg-track vg-axis-dates' }), monthLabels = [];
     for (let d = 0; d < days; d++) {
       const date = new Date(first + d * DAY_MS);
@@ -693,7 +708,7 @@ class GanttView extends BasesView {
     if (this.model.showToday && today >= first && today <= last) {
       const x = (today - first) / DAY_MS * dayWidth + dayWidth / 2;
       const marker = chart.createDiv({ cls: 'vg-today-line', attr: { 'aria-hidden': 'true' } });
-      marker.style.left = labelWidth + x + 'px'; marker.style.top = AXIS_HEIGHT + 'px';
+      marker.style.left = `calc(var(--vg-label-width) + ${x}px)`; marker.style.top = AXIS_HEIGHT + 'px';
       const todayLabel = axisDates.createDiv({ cls: 'vg-today-label', text: 'Today', attr: { title: utcLabel(today) } }); todayLabel.style.left = Math.max(18, Math.min(days * dayWidth - 18, x)) + 'px';
     }
     const pinMonthLabels = () => {
@@ -719,7 +734,7 @@ class GanttView extends BasesView {
     }, { passive: false });
     pinMonthLabels();
     if (focusLabel === 'Timeline zoom') zoomSelect.focus();
-    else if (focusLabel === 'Task column width') widthInput.focus();
+    else if (focusLabel === 'Task column width') resizer.focus();
     this.root.createDiv({ cls: 'vg-footer', text: `${utcLabel(min)} to ${utcLabel(max)} · Calendar days, inclusive · ${enableEditing ? 'Click or drag a bar to propose dates. Save confirms the change.' : 'Click a task name to open its note. Date editing is off.'}` });
   }
 }

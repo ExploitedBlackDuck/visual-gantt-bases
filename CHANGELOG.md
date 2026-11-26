@@ -4,6 +4,7 @@ by LanternSquid
 ## Unreleased
 
 - Add an optional Shift + scroll zoom setting. It steps between Day, Week, and Month zoom and keeps the date under the pointer in place. It is off by default.
+- Replace the Task width slider with a draggable column edge on the Task heading. Double-click resets the width, and the arrow keys, Home, and End resize it from the keyboard.
 
 ## 0.7.1
 
