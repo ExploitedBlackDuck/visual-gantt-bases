@@ -71,6 +71,7 @@ function fixture() {
   assert.equal(pages.length, 6); assert.equal(pages[0].days, 30); assert.equal(pages.at(-1).count, 1);
   assert.equal(t.planPdfPages({ ...model, tasks: Array(12).fill(a), days: 31, labelWidth: 320 }).length, 2, 'padding must not create almost-empty pages');
   assert.throws(() => t.planPdfPages({ ...model, tasks: Array(500).fill(a), days: 730 }), /100 pages/);
+  assert.deepEqual(t.ZOOM_ORDER, ['month', 'week', 'day']);
   assert.equal(t.wheelZoom('month', -100), 'week'); assert.equal(t.wheelZoom('week', -1), 'day'); assert.equal(t.wheelZoom('day', -1), 'day');
   assert.equal(t.wheelZoom('day', 100), 'week'); assert.equal(t.wheelZoom('month', 1), 'month'); assert.equal(t.wheelZoom('week', 0), 'week'); assert.equal(t.wheelZoom('bad', 1), 'bad');
   assert.equal(t.clampWidth(10000), 520); assert.equal(t.clampWidth(0), 180); assert.equal(t.clampWidth('bad'), 300);
