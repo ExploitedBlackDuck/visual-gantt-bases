@@ -51,6 +51,8 @@ A milestone has matching start and end dates. You can also set `milestone: true`
 
 **Zoom** changes the number of pixels per calendar day. Week and Month are useful for longer projects. They don't change any task dates. Short bars hide their status text when it won't fit. Hover or focus to inspect their dates and status.
 
+**Shift + scroll to zoom** is an optional view setting, off by default. When it is on, holding Shift while scrolling over the timeline steps between Day, Week, and Month zoom. Scrolling up zooms in and scrolling down zooms out. The date under the pointer stays in place. Without Shift, scrolling works as usual.
+
 **Task width** changes the pinned label column. The same setting is available in the Base view options.
 
 **Today** includes today when it falls outside the scheduled range and centers it when possible. **Project** returns to the project's dates. A two-year range limit prevents an extremely distant Today jump.

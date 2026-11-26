@@ -1,6 +1,10 @@
 # Changelog
 by LanternSquid
 
+## Unreleased
+
+- Add an optional Shift + scroll zoom setting. It steps between Day, Week, and Month zoom and keeps the date under the pointer in place. It is off by default.
+
 ## 0.7.1
 
 - Replace CSS importance overrides with selectors scoped to the chart task buttons.

@@ -5,6 +5,7 @@ const VIEW_TYPE = 'visual-gantt';
 const DAY_MS = 86400000;
 const LABEL_WIDTH = 300, DAY_WIDTH = 26, ROW_HEIGHT = 52, AXIS_HEIGHT = 76;
 const ZOOM_WIDTHS = { day: 26, week: 9, month: 3.5 };
+const ZOOM_ORDER = ['month', 'week', 'day'];
 const MAX_TASKS = 500;
 const activeWrites = new WeakSet();
 function localToday(now = new Date()) {
@@ -13,6 +14,8 @@ function localToday(now = new Date()) {
   date.setUTCHours(0, 0, 0, 0);
   return date.getTime();
 }
+// Scrolling up zooms in toward Day; scrolling down zooms out toward Month.
+function wheelZoom(zoom, delta) { const i = ZOOM_ORDER.indexOf(zoom); return i < 0 || !delta ? zoom : ZOOM_ORDER[Math.min(ZOOM_ORDER.length - 1, Math.max(0, i + (delta < 0 ? 1 : -1)))]; }
 function clampWidth(input) { const n = Number(input); return Number.isFinite(n) ? Math.min(520, Math.max(180, Math.round(n / 20) * 20)) : LABEL_WIDTH; }
 function fieldIssue(fields) {
   const unsafe = key => !key || ['__proto__', 'constructor', 'prototype'].includes(key);
@@ -700,6 +703,20 @@ class GanttView extends BasesView {
     if (old?.first != null) { scroll.scrollLeft = Math.max(0, ((old.first - first) / DAY_MS + old.left / old.dayWidth) * dayWidth); scroll.scrollTop = old.top; }
     if (this.jumpToday) { scroll.scrollLeft = Math.max(0, (today - first) / DAY_MS * dayWidth - (scroll.clientWidth - labelWidth) / 2); this.jumpToday = false; }
     if (this.jumpStart) { scroll.scrollLeft = 0; scroll.scrollTop = 0; this.jumpStart = false; }
+    // Keep the date under the pointer in place after a Shift + wheel zoom.
+    if (this.zoomAnchor) { scroll.scrollLeft = Math.max(0, (this.zoomAnchor.date - first) / DAY_MS * dayWidth - this.zoomAnchor.offset); this.zoomAnchor = null; }
+    if (this.config.get('shiftWheelZoom') === true) scroll.addEventListener('wheel', e => {
+      if (!e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
+      e.preventDefault();
+      const next = wheelZoom(zoom, e.deltaY || e.deltaX), now = Date.now();
+      // Trackpads send many wheel events per gesture; step one zoom level at a time.
+      if (next === zoom || now - (this.lastWheelZoom || 0) < 250) return;
+      this.lastWheelZoom = now;
+      const view = scroll.clientWidth - labelWidth, pointer = e.clientX - scroll.getBoundingClientRect().left - labelWidth;
+      const offset = pointer >= 0 && pointer <= view ? pointer : view / 2;
+      this.zoomAnchor = { date: first + (scroll.scrollLeft + offset) / dayWidth * DAY_MS, offset };
+      this.config.set('zoom', next); this.onDataUpdated();
+    }, { passive: false });
     pinMonthLabels();
     if (focusLabel === 'Timeline zoom') zoomSelect.focus();
     else if (focusLabel === 'Task column width') widthInput.focus();
@@ -714,6 +731,7 @@ class VisualGanttPlugin extends Plugin {
       name: 'Visual Gantt', icon: 'calendar-range', factory: (controller, containerEl) => new GanttView(controller, containerEl, this),
       options: () => [
         { type: 'dropdown', displayName: 'Timeline zoom', key: 'zoom', default: 'day', options: { day: 'Day', week: 'Week', month: 'Month' } },
+        { type: 'toggle', displayName: 'Shift + scroll to zoom', key: 'shiftWheelZoom', default: false },
         { type: 'slider', displayName: 'Task column width', key: 'labelWidth', default: LABEL_WIDTH, min: 180, max: 520, step: 20 },
         { type: 'toggle', displayName: 'Show today marker', key: 'showToday', default: true },
         { type: 'toggle', displayName: 'Enable date editing (experimental)', key: 'enableEditing', default: false },
@@ -731,4 +749,4 @@ class VisualGanttPlugin extends Plugin {
   onunload() { this.lastChange = null; for (const view of this.views) view.root.empty(); this.views.clear(); }
 }
 module.exports = VisualGanttPlugin;
-module.exports._test = { isoDate, parseDependencies, resolveGraph, makeTasks, strictDate, shiftRange, validateChange, unchangedDates, saveTaskDates, undoDateChange, sameDependencies, statusClass, localToday, clampWidth, fieldIssue, verifyRelatedTasks, dependencyGeometry, planPdfPages, makeRasterPdf, drawExportCanvas, saveExport };
+module.exports._test = { isoDate, parseDependencies, resolveGraph, makeTasks, strictDate, shiftRange, validateChange, unchangedDates, saveTaskDates, undoDateChange, sameDependencies, statusClass, localToday, clampWidth, wheelZoom, fieldIssue, verifyRelatedTasks, dependencyGeometry, planPdfPages, makeRasterPdf, drawExportCanvas, saveExport };
